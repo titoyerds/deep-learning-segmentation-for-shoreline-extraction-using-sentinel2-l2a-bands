@@ -71,7 +71,6 @@ def get_accuracy(pred, target):
     """
     return (pred == target).float().mean()
 
-
 def get_precision(pred, target, num_classes):
     """Precision = TP / (TP + FP), averaged across classes that have predictions."""
     components = get_confusion_components(pred, target, num_classes)
@@ -82,7 +81,6 @@ def get_precision(pred, target, num_classes):
             continue
         precisions.append(tp / denom)
     return torch.mean(torch.stack(precisions))
-
 
 def get_recall(pred, target, num_classes):
     """Recall = TP / (TP + FN), averaged across classes that have ground-truth pixels."""
@@ -95,13 +93,11 @@ def get_recall(pred, target, num_classes):
         recalls.append(tp / denom)
     return torch.mean(torch.stack(recalls))
 
-
 def _extract_boundary(binary_mask, tolerance):
     """Dilate a binary mask and XOR with original to get boundary pixels."""
     dilated  = binary_dilation(binary_mask, iterations=tolerance)
     boundary = np.logical_xor(dilated, binary_mask)
     return boundary
-
 
 def get_boundary_f1_score(pred, target, num_classes, tolerance=2):
     """BFScore = 2 * (Precision * Recall) / (Precision + Recall)"""
@@ -126,7 +122,6 @@ def get_boundary_f1_score(pred, target, num_classes, tolerance=2):
 
     return float(np.mean(bf_scores)) if bf_scores else 0.0
 
-
 def get_mIoU(pred, target, num_classes):
     components = get_confusion_components(pred, target, num_classes)
     ious = []
@@ -136,7 +131,6 @@ def get_mIoU(pred, target, num_classes):
             continue
         ious.append(tp / denom)
     return torch.mean(torch.stack(ious))
-
 
 def _extract_shoreline(binary_mask):
     """Extract boundary pixels between water and land."""
